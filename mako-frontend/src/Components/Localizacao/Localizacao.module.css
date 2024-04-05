@@ -1,0 +1,16 @@
+.mapResponsive {
+    overflow: hidden;
+    padding-bottom: 50%;
+    position: relative;
+    height: 0;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+.mapResponsive iframe {
+    border: none;
+    width: 95%;
+    height: 100%;
+    position: absolute;
+}
