@@ -1,43 +1,87 @@
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { createUser } from "../../../Firebase/Firebase.js";
+import { NavLink } from "react-router-dom";
 import Input from "../../../Components/Input/Input.jsx";
 import Button from "../../../Components/Button/Button.jsx";
 import styles from "../LoginCreate/LoginCreate.module.css";
 import stylesBtn from "../../../Components/Button/Button.module.css";
-import useForm from "../../../Hook/useForm/useForm.js";
+import UserAuthentication from "../../../Firebase/UserAuthentication/UserAuthentication";
+import Error from "../../../Helpers/Error";
 
 const LoginCreate = () => {
-    const username = useForm();
-    const email = useForm();
-    const password = useForm();
+    const [displayName, setDisplayName] = React.useState("");
+    const [contato, setContato] = React.useState("");
+    const [email, setEmail] = React.useState("");
+    const [password, setPassword] = React.useState("");
+    const [confirmPassword, setConfirmPassword] = React.useState("");
 
-    const navigate = useNavigate();
+    const [error, setError] = React.useState("");
 
-    const [loading, setLoading] = React.useState(false);
-    const [error, setError] = React.useState(null);
+    const { createUser, error: authError, loading } = UserAuthentication();
 
-
-    // NÃO MEXER NESSA CARALHA, DE ALGUMA FORMA FINALMENTE FUNCIONOU ESSA
-    // DESGRAÇA DA PORRA
     async function handleSubmit(e) {
         e.preventDefault();
-        await createUser(email.value, password.value);
-        navigate("/conta/editar-conta");
+
+        const user = {
+            displayName,
+            contato,
+            email,
+            password,
+            confirmPassword
+        };
+        await createUser(user);
     }
+
+    React.useEffect(() => {
+        if (authError) {
+            setError(authError);
+        }
+    }, [authError]);
 
     return (
         <section className={"animeLeft"}>
             <h1 className={"title"}>Cadastre-se</h1>
             <form onSubmit={handleSubmit} className={styles.form}>
-                <Input label={"Email"} type={"email"} name={"email"} {...email} />
-                <Input label={"Senha"} type={"password"} name={"password"} {...password} />
-                {loading ? (
-                    <Button>Cadastrando...</Button>
+                <Input
+                    label={"Nome"}
+                    type={"text"}
+                    name={"name"}
+                    value={displayName}
+                    onChange={({ target }) => setDisplayName(target.value)}
+                />
+                <Input
+                    label={"Contato"}
+                    type={"text"}
+                    name={"contato"}
+                    value={contato}
+                    onChange={({ target }) => setContato(target.value)}
+                />
+                <Input
+                    label={"Email"}
+                    type={"email"}
+                    name={"email"}
+                    value={email}
+                    onChange={({ target }) => setEmail(target.value)}
+                />
+                <Input
+                    label={"Senha"}
+                    type={"password"}
+                    name={"password"}
+                    value={password}
+                    onChange={({ target }) => setPassword(target.value)}
+                />
+                <Input
+                    label={"Confirmar senha"}
+                    type={"password"}
+                    name={"passwordConfirm"}
+                    value={confirmPassword}
+                    onChange={({ target }) => setConfirmPassword(target.value)}
+                />
+                { loading ? (
+                    <Button disabled={true}>Cadastrando...</Button>
                 ) : (
                     <Button>Cadastrar</Button>
                 )}
-                {error && <p>{error}</p>}
+                {error && <Error error={error} /> }
             </form>
             <div className={styles.cadastro}>
             <h2 className={"subtitle"}>Já possui cadastro?</h2>

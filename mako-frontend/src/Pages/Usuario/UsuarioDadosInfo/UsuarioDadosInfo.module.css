@@ -39,3 +39,7 @@
     width: 35%;
     margin: 0.5rem 0;
 }
+
+.googleCalendar {
+    grid-row: 3;
+}

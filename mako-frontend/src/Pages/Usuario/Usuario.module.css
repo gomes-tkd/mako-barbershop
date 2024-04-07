@@ -4,18 +4,6 @@
     padding: 3rem;
 }
 
-
-.usuarioInfoBg {
-    background: #eee;
-    padding: 1rem;
-    border-radius: 5px;
-    margin-bottom: 0;
-}
-
-.usuarioInfo button {
-    margin-top: 1rem;
-}
-
 .usuarioInfoDetails {
     grid-column: span 2;
     gap: 1rem;

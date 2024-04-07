@@ -6,28 +6,18 @@ import Header from "./Components/Header/Header.jsx";
 import Home from "./Pages/Home/Home.jsx";
 import Footer from "./Components/Footer/Footer.jsx";
 import Login from "./Pages/Login/Login.jsx";
-import {AuthProvider, useAuthValue} from "./UserContext/UserContext.jsx";
+import {AuthProvider} from "./UserContext/UserContext.jsx";
 import Usuario from "./Pages/Usuario/Usuario.jsx";
-import {getUserDataFirebase} from "./Firebase/Firebase.js";
 
 function App() {
   const [user, setUser] = React.useState(undefined);
   const auth = getAuth();
 
-  const isAuth = useAuthValue();
-  const uid = isAuth?.user.uid;
-  const [dataUser, setDataUser] = React.useState({});
-
   React.useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-        setUser(user);
-    });
-
+        onAuthStateChanged(auth, (user) => {
+            setUser(user);
+        });
   }, [auth]);
-
-    React.useEffect(() => {
-        getUserDataFirebase(uid, setDataUser);
-    }, []);
 
   return (
     <>
@@ -37,7 +27,7 @@ function App() {
               <Routes>
                   <Route path={"/"} element={<Home />} />
                   <Route path={"/login/*"} element={<Login />} />
-                  <Route path={"/conta/*"} element={<Usuario dataUser={dataUser} />} />
+                  <Route path={"/conta/*"} element={<Usuario />} />
               </Routes>
               <Footer />
           </BrowserRouter>

@@ -1,0 +1,29 @@
+.usuarioEditar {
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.usuarioEditar h1 {
+    grid-column: span 2;
+}
+
+
+.usuarioEdit {
+    display: grid;
+    gap: 1rem;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+.usuarioEdit button {
+    margin-top: 1rem;
+}
+
+.usuarioEditEmail {
+    grid-column: span 2;
+}
