@@ -1,7 +1,7 @@
 const mongoose = require("../db/conn");
 const { Schema } = mongoose;
 
-const Comment = mongoose.model(
+const Schedule = mongoose.model(
     "Scheduling",
     new Schema({
             clientId: {
@@ -24,10 +24,12 @@ const Comment = mongoose.model(
                 type: String,
                 required: true
             },
+            servicesRequested: []
+
         },
         {
             timestamps: true
         })
 );
 
-module.exports = Comment;
+module.exports = Schedule;

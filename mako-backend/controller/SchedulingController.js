@@ -1,11 +1,12 @@
 const Scheduling = require("../model/SchedulingModel");
+const Earn = require("../model/EarnModel");
 const ObjectId = require("mongoose").Types.ObjectId;
 const getToken = require("../helpers/get-token");
 const getUserByToken = require("../helpers/get-user-by-token");
 
 module.exports = class SchedulingController {
     static async scheduling(req, res) {
-        const { dataDay, dataHour } = req.body;
+        const { dataDay, dataHour, servicesRequested } = req.body;
 
         const token = getToken(req);
 
@@ -17,30 +18,43 @@ module.exports = class SchedulingController {
         const user = await getUserByToken(token);
 
         if (!user) {
-            res.status(422).json({ message: "Invalid User"});
+            res.status(422).json({ message: "Invalid User" });
             return;
         }
 
         if(!dataDay) {
-            res.status(422).json({ message: "Campo dia é obrigatório"});
+            res.status(422).json({ message: "Campo dia é obrigatório" });
             return;
         }
 
         if(!dataHour) {
-            res.status(422).json({ message: "Campo hora é obrigatório"});
+            res.status(422).json({ message: "Campo hora é obrigatório" });
             return;
         }
 
-        const scheduling = new Scheduling({
-            clientId: user._id,
-            clientName: user.name,
-            clientPhone: user.phone,
-            dataDay,
-            dataHour
-        });
-
-
         try {
+            const earnItems = [];
+
+            for (const service of servicesRequested) {
+                const { serviceType, serviceValue } = service;
+                const earn = new Earn({
+                    serviceType,
+                    serviceValue
+                });
+                const savedEarn = await earn.save();
+                earnItems.push(savedEarn);
+            }
+
+            const scheduling = new Scheduling({
+                clientId: user._id,
+                clientName: user.name,
+                clientPhone: user.phone,
+                dataDay,
+                dataHour,
+                servicesRequested: earnItems
+            });
+
+
             const newScheduling = await scheduling.save();
             res.status(201).json({ message: "Appointment completed successfully", newScheduling });
         } catch (e) {
