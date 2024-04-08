@@ -170,7 +170,7 @@ module.exports = class UserController {
         // check if the email already exists
         const isEmailExists = await User.findOne({ email: email })
 
-        if (user.email !== email && isEmailExists) {
+        if (user.email !== email && isEmailExists ) {
             res.status(422).json({ message: "Por favor, utilize outro e-mail!" });
             return;
         }

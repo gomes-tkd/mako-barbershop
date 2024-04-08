@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Context, UserProvider } from "./Context/UserContext";
 import "./App.css";
 import Header from "./Components/Header/Header.jsx";
 import Home from "./Pages/Home/Home.jsx";
@@ -8,10 +9,9 @@ import Login from "./Pages/Login/Login.jsx";
 import Usuario from "./Pages/Usuario/Usuario.jsx";
 
 function App() {
-
   return (
-    <>
-        <BrowserRouter>
+      <BrowserRouter>
+        <UserProvider>
             <Header />
             <Routes>
                 <Route path={"/"} element={<Home />} />
@@ -19,8 +19,8 @@ function App() {
                 <Route path={"/conta/*"} element={<Usuario />} />
             </Routes>
             <Footer />
-        </BrowserRouter>
-    </>
+        </UserProvider>
+      </BrowserRouter>
   );
 }
 

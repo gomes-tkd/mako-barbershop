@@ -1,11 +1,13 @@
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import { Context } from "../../Context/UserContext";
 import Logo from "../../assets/logo.jpeg";
 import styles from "./Header.module.css";
 import { LocationSvg, CommentsSvg } from "../../assets/svgImageList.jsx";
 
 const Header = () => {
     const location = useLocation();
+    const { authenticated } = React.useContext(Context);
 
     React.useEffect(() => {
         const hash = location.hash;
@@ -30,15 +32,18 @@ const Header = () => {
                     <NavLink to={"/#localizacao"} className={styles.link}>
                         Localização <LocationSvg />
                     </NavLink>
+                    {authenticated ? (
                         <NavLink
                             className={styles.login} to={"/conta"}
                         >
                             Conta
                         </NavLink>
+                    ) : (
                         <NavLink
                             className={styles.login} to={"/login"}>
                             Entrar | Criar
                         </NavLink>
+                    )}
                 </div>
             </nav>
         </header>
