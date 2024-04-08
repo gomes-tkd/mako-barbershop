@@ -3,10 +3,8 @@ import { NavLink, useLocation } from "react-router-dom";
 import Logo from "../../assets/logo.jpeg";
 import styles from "./Header.module.css";
 import { LocationSvg, CommentsSvg } from "../../assets/svgImageList.jsx";
-import { useAuthValue } from "../../UserContext/UserContext.jsx";
 
 const Header = () => {
-    const { user } = useAuthValue();
     const location = useLocation();
 
     React.useEffect(() => {
@@ -32,18 +30,15 @@ const Header = () => {
                     <NavLink to={"/#localizacao"} className={styles.link}>
                         Localização <LocationSvg />
                     </NavLink>
-                    {user ? (
                         <NavLink
                             className={styles.login} to={"/conta"}
                         >
                             Conta
                         </NavLink>
-                    ) : (
                         <NavLink
                             className={styles.login} to={"/login"}>
                             Entrar | Criar
                         </NavLink>
-                    )}
                 </div>
             </nav>
         </header>
