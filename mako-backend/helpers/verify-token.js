@@ -21,7 +21,6 @@ function checkToken(req, res, next) {
         next();
     } catch (e) {
         res.status(400).json({ message: "Invalid token!"});
-
     }
 }
 

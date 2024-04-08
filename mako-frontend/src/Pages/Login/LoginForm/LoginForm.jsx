@@ -20,7 +20,7 @@ const LoginForm = () => {
             password: password
         };
 
-        login(userData);
+        login({ email, password});
     }
 
     return (

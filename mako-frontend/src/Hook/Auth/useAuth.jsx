@@ -25,9 +25,11 @@ export default function useAuth() {
             // autentica o usuário
             await authUser(data);
             console.log("autenticado");
+            return true;
         } catch (e) {
             // trata o erro
             console.log(e.message);
+            return false;
         }
     }
 
@@ -36,16 +38,24 @@ export default function useAuth() {
             const data = await api.post("/user/login/", user).then(response => response.data);
 
             await authUser(data);
-            return;
+            return true;
         } catch (e) {
             console.log(e.message);
+            return false;
         }
    }
 
     async function authUser(data) {
-        setAuthenticated(true);
-        window.localStorage.setItem("token", JSON.stringify(data.token));
-        navigate("/conta/");
+        try {
+            setAuthenticated(true);
+            window.localStorage.setItem("token", JSON.stringify(data.token));
+            navigate("/conta/");
+            return true;
+        } catch (e) {
+            console.log(e.message);
+            return false;
+        }
+
     }
 
     function logout() {

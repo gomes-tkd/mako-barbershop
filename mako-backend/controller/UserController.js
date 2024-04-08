@@ -101,6 +101,7 @@ module.exports = class UserController {
 
         // loga o usuário
         await createUserToken(user, req, res);
+        return true;
     }
 
     // access the current user's token
@@ -123,6 +124,7 @@ module.exports = class UserController {
         }
 
         res.status(200).send(currentUser);
+        return true;
     }
 
     static async getUserById(req, res) {
@@ -137,6 +139,7 @@ module.exports = class UserController {
         }
 
         res.status(200).json({ user });
+        return true;
     }
 
     static async editUser(req, res) {
@@ -208,10 +211,10 @@ module.exports = class UserController {
             );
 
             res.status(200).json({ message: "User updated with success!!" });
-
+            return true;
         } catch (e) {
             res.status(500).json({ message: e.toString() });
-            return;
+            return false;
         }
     }
 }
