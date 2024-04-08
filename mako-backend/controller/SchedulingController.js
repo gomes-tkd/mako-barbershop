@@ -12,24 +12,24 @@ module.exports = class SchedulingController {
 
         if (!token) {
             res.status(422).json({ message: "Invalid Token"});
-            return;
+            return false;
         }
 
         const user = await getUserByToken(token);
 
         if (!user) {
             res.status(422).json({ message: "Invalid User" });
-            return;
+            return false;
         }
 
         if(!dataDay) {
             res.status(422).json({ message: "Campo dia é obrigatório" });
-            return;
+            return false;
         }
 
         if(!dataHour) {
             res.status(422).json({ message: "Campo hora é obrigatório" });
-            return;
+            return false;
         }
 
         try {
@@ -57,8 +57,10 @@ module.exports = class SchedulingController {
 
             const newScheduling = await scheduling.save();
             res.status(201).json({ message: "Appointment completed successfully", newScheduling });
+            return true;
         } catch (e) {
             res.status(500).json({ message: e.toString()});
+            return false;
         }
 
     }
@@ -69,7 +71,7 @@ module.exports = class SchedulingController {
 
         if (!ObjectId.isValid(id)) {
             res.status(422).json({ message: "Invalid ID "});
-            return;
+            return false;
         }
 
         // check if scheduling exists
@@ -77,7 +79,7 @@ module.exports = class SchedulingController {
 
         if(!scheduling) {
             res.status(404).json({ message: "Appointment not found "});
-            return;
+            return false;
         }
 
         const token = getToken(req);
@@ -88,13 +90,29 @@ module.exports = class SchedulingController {
             res.status(422).json({ message: "não was possible to process your solicitation"});
         }
 
-        await Scheduling.findByIdAndDelete(id);
-        res.status(200).json({ message: "Appointment removed with success" });
+        try {
+            await Scheduling.findByIdAndDelete(id);
+            res.status(200).json({ message: "Appointment removed with success" });
+
+            return true;
+        } catch (e) {
+            console.log(e.message);
+            return false;
+        }
+
     }
 
     static async getAllScheduling(req, res) {
-        const scheduling = await Scheduling.find().sort("-createdAt");
+        try {
+            const scheduling = await Scheduling.find().sort("-createdAt");
 
-        res.status(200).json({ message: "All scheduling at moment!", scheduling: scheduling });
+            res.status(200).json({ message: "All scheduling at moment!", scheduling: scheduling });
+
+            return true;
+        } catch (e) {
+            console.log(e.message);
+            return false;
+        }
+
     }
 }

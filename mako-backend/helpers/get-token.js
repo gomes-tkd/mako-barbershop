@@ -1,11 +1,17 @@
 function getToken(req) {
-    // extract token from header and clean - remove "Bearer " from token
-    const authHeader = req.headers.authorization;
+    try {
+        // extract token from header and clean - remove "Bearer " from token
+        const authHeader = req.headers.authorization;
 
-    // get the token
-    const token = authHeader.split(" ")[1];
+        // get the token
+        const token = authHeader.split(" ")[1];
 
-    return token;
+        return token;
+    } catch (e) {
+        console.log(e.message);
+        return false;
+    }
+
 }
 
 module.exports = getToken;

@@ -17,6 +17,7 @@ const LoginCreate = () => {
 
     function handleSubmit(e) {
         e.preventDefault();
+
         const user = {
             name: nome,
             phone: contato,

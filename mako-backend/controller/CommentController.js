@@ -10,14 +10,14 @@ module.exports = class CommentController {
 
         if (!user) {
             res.status(401).json({ message: "Usuário precisa estar logado para postar um comentário"});
-            return;
+            return false;
         }
 
         const { authorId, authorName, commentText } = req.body;
 
         if(!commentText) {
             res.status(401).json({ message: "Campo do comentário deve ser preenchido"});
-            return;
+            return false;
         }
 
         // creating a new commentary
@@ -32,15 +32,25 @@ module.exports = class CommentController {
             const newComment = await comment.save();
 
             res.status(201).json({ message: "new comment added with success", newComment });
+            return true;
         } catch (e) {
             res.status(500).json({ massage: e.toString() });
+            return false;
         }
     }
 
     static async getAllComments(req, res) {
 
-        const comments = await Comment.find().sort("-createdAt");
+        try {
+            const comments = await Comment.find().sort("-createdAt");
 
-        res.status(200).json({ message: "All comments at moment!", comments: comments });
+            res.status(200).json({ message: "All comments at moment!", comments: comments });
+
+            return true;
+        } catch (e) {
+            console.log(e.toString());
+            return false;
+        }
+
     }
 }

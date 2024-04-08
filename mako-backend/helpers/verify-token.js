@@ -19,8 +19,10 @@ function checkToken(req, res, next) {
         const verified = jwt.verify(token, "nossosecret");
         req.user = verified;
         next();
+        return true;
     } catch (e) {
         res.status(400).json({ message: "Invalid token!"});
+        return false;
     }
 }
 

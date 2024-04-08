@@ -65,8 +65,10 @@ module.exports = class UserController {
             // .save() ==> mongoose --> método para salvar
             const newUser = await user.save();
             await createUserToken(newUser, req, res);
+            return true;
         } catch (e) {
             res.status(500).json({ message: e.toString()});
+            return false;
         }
     }
 
@@ -123,8 +125,14 @@ module.exports = class UserController {
             currentUser = null;
         }
 
-        res.status(200).send(currentUser);
-        return true;
+        try {
+            res.status(200).send(currentUser);
+            return true;
+        } catch (e) {
+            console.log(e.message.toString());
+            return false;
+        }
+
     }
 
     static async getUserById(req, res) {
@@ -138,8 +146,13 @@ module.exports = class UserController {
             return;
         }
 
-        res.status(200).json({ user });
-        return true;
+        try {
+            res.status(200).json({ user });
+            return true;
+        } catch (e) {
+            console.log(e.message);
+            return false;
+        }
     }
 
     static async editUser(req, res) {

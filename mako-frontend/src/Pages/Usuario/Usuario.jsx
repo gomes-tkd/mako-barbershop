@@ -29,7 +29,7 @@ const Usuario = () => {
         <section className={`container ${styles.usuario}`}>
             <Routes>
                 <Route path={"/"} element={<UsuarioDadosInfo userData={userData} />} />
-                <Route path={"editar-conta"} element={<UsuarioEditarDados userData={userData} token={token}/>} />
+                <Route path={"/editar-conta"} element={<UsuarioEditarDados userData={userData} token={token}/>} />
             </Routes>
         </section>
     );

@@ -25,8 +25,10 @@ module.exports = class GalleryController {
                 message: "Gallery updated!",
                 newGallery
             });
+            return true;
         } catch (e) {
             res.status(500).json({ message: e.toString() });
+            return false;
         }
     }
 
@@ -48,8 +50,10 @@ module.exports = class GalleryController {
                 message: "Gallery updated!",
                 newGallery
             });
+            return true;
         } catch (e) {
             res.status(500).json({ message: e.toString() });
+            return false;
         }
     }
 
@@ -60,7 +64,7 @@ module.exports = class GalleryController {
 
         if(!ObjectId.isValid(id)) {
             res.status(422).json({ message: "Invalid ID" });
-            return;
+            return false;
         }
 
         // check if images exists
@@ -68,15 +72,30 @@ module.exports = class GalleryController {
 
         if(!photo) {
             res.status(404).json({ message: "Error: 404 Not Found" });
-            return;
+            return false;
         }
 
-        res.status(200).json({ photo: photo });
+        try {
+            res.status(200).json({ photo: photo });
+
+            return true;
+        } catch (e) {
+            console.log(e.message)
+            return false;
+        }
     }
 
     static async getAllGalleryPhotos(req, res) {
-        const gallery = await Gallery.find().sort("-createdAt");
+        try {
+            const gallery = await Gallery.find().sort("-createdAt");
 
-        res.status(200).json({ message: "All photos at moment!", gallery: gallery });
+            res.status(200).json({ message: "All photos at moment!", gallery: gallery });
+
+            return true;
+        } catch (e) {
+            console.log(e.message)
+            return false;
+        }
+
     }
 }
